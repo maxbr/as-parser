@@ -1,0 +1,8 @@
+*.pyc
+env
+env2
+env3
+credential.txt
+secret
+.DS_Store
+server/node_modules/*

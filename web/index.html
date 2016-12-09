@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- SITE META -->
+    <title>Violetta | Creative Agency HTML Template</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-touch-icon-152x152.png">
+
+    <!-- BOOTSTRAP STYLES -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!-- TEMPLATE STYLES -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <!-- LOADER -->
+        <div id="preloader">
+            <div id="spinner"></div>
+            <img class="preloader" src="images/loader.png" alt="">
+        </div><!-- end loader -->
+    <!-- END LOADER -->
+    
+    <!-- ******************************************
+    MODAL NEWSLETTER
+    ********************************************** -->
+    <div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <form>
+                    <input type="email" name="email" class="form-control" placeholder="Enter your email address...">
+                    <button class="btn btn-inverse">subscribe now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ******************************************
+    END MODAL SEARCH
+    ********************************************** -->
+
+    <!-- ******************************************
+    MODAL SEARCH
+    ********************************************** -->
+    <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <form>
+                    <input type="text" name="search" class="form-control" placeholder="what you are looking for...">
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ******************************************
+    END MODAL SEARCH
+    ********************************************** -->
+
+    <!-- ******************************************
+    START SITE HERE
+    ********************************************** -->
+
+    <div id="wrapper">
+        <div class="sticky-buttons">
+            <a data-toggle="modal" data-target="#newsletter-modal" class="newsletter-button">
+                <div>Subscribe <span class="oi" data-glyph="envelope-closed" title="Subscribe" aria-hidden="false"></span></div>
+            </a>
+        </div>
+        <div class="navbar-search">
+            <a href="#" data-toggle="modal" data-target="#search-modal"><span class="fa fa-search"></span></a>
+        </div>
+
+        <div class="fixed-offcanvas-menu">
+            <nav class="navmenu navmenu-inverse navmenu-fixed-left offcanvas">
+                <a class="navmenu-brand with-text" href="index.html">Violetta.</a>
+                <ul class="nav navmenu-nav">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Home <b class="fa fa-angle-down"></b></a>
+                        <ul class="dropdown-menu navmenu-nav">
+                            <li><a href="index-agency.html">Agency</a></li>
+                            <li><a href="index-photography.html">Photography</a></li>
+                            <li><a href="index-marketplace.html">Marketplace</a></li>
+                            <li><a href="index-blogging.html">Blogging</a></li>
+                            <li><a href="index-resume.html">Resume CV</a></li>
+                            <li><a href="index-portfolio.html">Portfolio</a></li>
+                            <li><a href="index-normal-menu.html">Standard Menu</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Works <b class="fa fa-angle-down"></b></a>
+                        <ul class="dropdown-menu navmenu-nav">
+                            <li><a href="work-01.html">Classic 2 Col</a></li>
+                            <li><a href="work-02.html">Classic 3 Col</a></li>
+                            <li><a href="work-03.html">Classic 4 Col</a></li>
+                            <li><a href="work-04.html">Classic 5 Col</a></li>
+                            <li><a href="work-05.html">Masonry 2 Col</a></li>
+                            <li><a href="work-06.html">Masonry 3 Col</a></li>
+                            <li><a href="work-07.html">Masonry 4 Col</a></li>
+                            <li><a href="work-08.html">Masonry 5 Col</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Projects <b class="fa fa-angle-down"></b></a>
+                        <ul class="dropdown-menu navmenu-nav">
+                            <li><a href="project-01.html">Single Portfolio</a></li>
+                            <li><a href="project-02.html">Single Photography</a></li>
+                            <li><a href="project-03.html">Single Marketplace</a></li>
+                            <li><a href="blog-single.html">Single Blog</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Pages <b class="fa fa-angle-down"></b></a>
+                        <ul class="dropdown-menu navmenu-nav">
+                            <li><a href="about.html">Our Studio</a></li>
+                            <li><a href="elements.html">Elements</a></li>
+                            <li><a href="page.html">Default Page</a></li>
+                            <li><a href="404.html">Not Found</a></li>
+                            <li><a href="sitemap.html">Sitemap</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="navbar navbar-default navbar-fixed-top">
+                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+                    <span class="oi" data-glyph="menu" title="menu" aria-hidden="false"></span>
+                </button>
+            </div>
+        </div><!-- end fixed-offcanvas-menu -->
+
+        <header class="header header-full">
+            <div class="container">
+                <div class="navbar-full clearfix">
+                    <div class="pull-left">
+                        <a class="navbar-brand with-text" href="index.html">Violetta.</a>
+                    </div>
+                    <div class="pull-right text-right">
+                        <ul class="list-inline">
+                            <li><a href="#"><span class="fa fa-twitter"></span></a></li>
+                            <li><a href="#"><span class="fa fa-dribbble"></span></a></li>
+                            <li><a href="#"><span class="fa fa-github"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- end container -->
+        </header><!-- end header -->
+
+        <div class="parallax section marketplace-search" data-stellar-background-ratio="0.5" style="background-image:url('upload/slider_03.jpg');">
+            <div class="container">
+                <div class="row centermessage text-center">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="tagline"><h4>Hundreds of handmade designs</h4></div>
+                        <form class="form-inline" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search for market items..">
+                            </div>
+                            <button type="submit" class="btn btn-inverse hidden-xs"><span class="oi" data-glyph="magnifying-glass"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end section -->
+
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center">
+                            <h3>Popular Items</h3>
+                            <hr>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav class="portfolio-filter text-center">
+                                <ul>
+                                    <li><a class="btn btn-default" href="#" data-filter="*"><span class="oi hidden-xs" data-glyph="grid-three-up"></span> All</a></li>
+                                    <li><a class="btn btn-default" data-toggle="tooltip" data-placement="top" title="5" href="#" data-filter=".cat1">Design</a></li> 
+                                    <li><a class="btn btn-default" href="#" data-toggle="tooltip" data-placement="top" title="12" data-filter=".cat2">Mockup</a></li>
+                                    <li><a class="btn btn-default" href="#" data-toggle="tooltip" data-placement="top" title="21" data-filter=".cat3">Logos</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <hr class="invis">
+
+                    <div id="normalportfolio" class="row portfolio">
+                        <div class="pitem gallery-item item-w1 item-h1 cat1">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_08.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Пистолет Cyma Glock 18C</a>
+                                        <small><a href="#">in Mockups</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">12 250 руб.</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="pitem gallery-item item-w1 item-h1 cat2">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_07.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Flayer Templates</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$12.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="pitem gallery-item item-w1 item-h1 cat3">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_06.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Ads Templates</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$6.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="pitem gallery-item item-w1 item-h1 cat1">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_01.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">iPhone Mockup</a>
+                                        <small><a href="#">in Mockups</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">Free</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="pitem gallery-item item-w1 item-h1 cat2">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_02.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Web Design Templates</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$12.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="pitem gallery-item item-w1 item-h1 cat3">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_05.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Deftica Flayer</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$5.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+                    </div><!-- end gallery -->
+                </div><!-- end content -->
+
+                <hr class="invis">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center large-buttons">
+                            <a href="#" class="btn btn-inverse btn-lg">View All Popular Items</a>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- /.section -->
+
+        <div class="section lightbg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center">
+                            <h3>Best Collections</h3>
+                            <hr>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/bundle_01.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Bigger Font Bundle</a>
+                                        <small><a href="#">in Fonts</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$32.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/bundle_02.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Blooming Collection</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$55.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/bundle_03.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Powerpoint Bundle</a>
+                                        <small><a href="#">in Powerpoint</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$65.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+                    </div><!-- end row -->
+                </div><!-- end content -->
+
+                <hr class="invis">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center large-buttons">
+                            <a href="#" class="btn btn-inverse btn-lg">Bundle items start from $1.00</a>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- /.section -->
+
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center">
+                            <h3>Recent Items</h3>
+                            <hr>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+
+                <div class="content">
+                    <div class="row recent-items">
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_13.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Admin Template by Corki</a>
+                                        <small><a href="#">in Fonts</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$55.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_12.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Community Re-Design</a>
+                                        <small><a href="#">in Design</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$44.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_11.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Free Mockup PSD</a>
+                                        <small><a href="#">in Mockups</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">Free</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_10.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Hell Logo Design</a>
+                                        <small><a href="#">in Materials</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$6.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_09.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Strawberry Mockup</a>
+                                        <small><a href="#">in Templates</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$7.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_14.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Graffitti Canvas</a>
+                                        <small><a href="#">in Templates</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$33.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_15.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Business Strategy Mcokup</a>
+                                        <small><a href="#">in Mockups</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$41.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_16.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Minimal Admin</a>
+                                        <small><a href="#">in CSS</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$12.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+
+                        <div class="col-md-4 col-sm-12 gallery-item">
+                            <div class="media-element">
+                                <div class="entry">
+                                    <a href="project-03.html"><img src="upload/market_17.jpg" alt="" class="img-responsive"></a>
+                                </div>
+                            </div><!-- end media -->
+                            <div class="market-desc photo-desc clearfix">
+                                <div class="pull-left">
+                                    <div class="item-title">
+                                        <a href="project-03.html">Ink Logo Design</a>
+                                        <small><a href="#">in Logos</a></small>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="publisher price"><a href="#">$44.00</a></span>
+                                </div>
+                            </div><!-- end photo-desc -->
+                        </div><!-- item -->
+                    </div><!-- end row -->
+                </div><!-- end content -->
+
+                <hr class="invis">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget-title text-center large-buttons">
+                            <a href="#" class="btn btn-inverse btn-lg">Browse By Category</a>
+                        </div><!-- end title -->
+                    </div>
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- /.section -->
+
+        <footer class="copyrights light-copyrights">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="copylinks">
+                            <ul class="list-inline">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Trademark</a></li>
+                                <li><a href="#">License</a></li>
+                            </ul><!-- end ul -->
+                            <p>Company Name &copy; 2016</p>
+                        </div><!-- end links -->
+                    </div><!-- end col -->
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="footer-social text-right">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-github"></i></a>
+                            <a class="dmtop" href="#"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </footer><!-- end copyrights -->
+
+    </div><!-- end wrapper -->
+
+    <!-- ******************************************
+    /END SITE
+    ********************************************** -->
+
+    <!-- ******************************************
+    DEFAULT JAVASCRIPT FILES
+    ********************************************** -->
+    <script src="js/all.js"></script>
+    <script src="js/custom.js"></script>
+
+    <!-- ******************************************
+    ADD YOUR CUSTOM JAVASCRIPT FILES HERE
+    ********************************************** -->
+    <!-- PORTFOLIO -->
+    <script src="js/portfolio-three-masonry.js"></script>
+
+</body>
+</html>
+
