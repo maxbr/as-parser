@@ -13,7 +13,7 @@ AS parser
 
 ## Services
 * Github - https://github.com/maxbr/as-parser
-* Docker hub - https://hub.docker.com/r/maxbr/as-parser
+* Docker hub - https://hub.docker.com/r/maxbr/as-producer
 * Jenkins - https://jenkins-maxbr.rhcloud.com
 * Docker service dashboard - https://console.hyper.sh
 * Kafka dashboard - https://api.cloudkarafka.com

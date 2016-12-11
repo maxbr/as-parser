@@ -70,7 +70,7 @@ echo &quot;CLOUDKARAFKA_PRIVATE_KEY=$CLOUDKARAFKA_PRIVATE_KEY&quot; &gt;&gt; env
 echo &quot;CLOUDKARAFKA_TOPIC_PREFIX=$CLOUDKARAFKA_TOPIC_PREFIX&quot; &gt;&gt; env-file
 echo &quot;CLOUDKARAFKA_BROKERS=$CLOUDKARAFKA_BROKERS&quot; &gt;&gt; env-file
 
-./hyper --config=./.hyper run --size=s3 --env-file env-file --rm maxbr/as-parser:latest $SITE_SCRIPT
+./hyper --config=./.hyper run --size=s3 --env-file env-file --rm maxbr/as-producer:latest $SITE_SCRIPT
 </command>
     </hudson.tasks.Shell>
   </builders>
