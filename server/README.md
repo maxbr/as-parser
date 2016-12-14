@@ -50,3 +50,7 @@ API
       }
     });
   ```
+  
+## Usage
+__docker:__ ``docker run -it --env-file env2 --rm -p 5050:5050 maxbr/as-web:dev``
+__hyper:__ ``hyper run -it --env-file env2 --rm -p 5050:5050 --size s1 maxbr/as-web:dev``

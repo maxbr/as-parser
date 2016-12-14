@@ -4,6 +4,7 @@ from urllib.request import urlopen, Request
 from lxml import etree
 from io import BytesIO
 from kafka_header import *
+import time
 
 URI = 'http://www.airsoft-rus.ru'
 
@@ -39,7 +40,8 @@ for i in range(1, last_page + 1):
         'price': price,
         'photos': photos,
         'store': 'airsoftrusru',
-        'timestamp': 0
+        'timestamp': int(time.time()),
+        'active': True
       }
 
       future = producer.send(topic_prefix + 'default', product)

@@ -2,8 +2,12 @@
 <head>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Самый большой каталог страйкбольного снаряжения (пистолетов, автоматов, винтовок, приводов) со всех интернет магазинов с доставкой"/>
+    <meta name="keywords" content="страйкбол,купить,привод,cyma,автомат,пистолет,страйкбольный,пневматический"/>
     <meta name="viewport" content="initial-scale=1"/>
-    <title>Каталог</title>
+    <link rel="icon" type="image/png" href="/img/icon.png" />
+    <title>All-Airsoft.ru | Самый большой каталог страйкбольного снаряжения и приводов со всех магазинов страны с доставкой</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
@@ -54,18 +58,35 @@
         }
     </style>
     <script>
-        var icons = [
-                'http://image.flaticon.com/icons/svg/119/119358.svg',
-                'http://image.flaticon.com/icons/svg/119/119325.svg',
-                'http://image.flaticon.com/icons/svg/119/119344.svg',
-                'http://image.flaticon.com/icons/svg/119/119363.svg',
-                'http://image.flaticon.com/icons/svg/119/119352.svg'
+        var icons = [ // from http://www.flaticon.com/packs/solid-war-elements
+                '/img/119358.svg',
+                '/img/119325.svg',
+                '/img/119344.svg',
+                '/img/119363.svg',
+                '/img/119352.svg'
         ];
 
         var app = angular.module('StarterApp', ['ngMaterial']);
 
+        app.filter("prettyPrice", function(){
+            return function(num){
+                var str = num.toString().split('.');
+                if (str[0].length >= 3) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
+                }
+                if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+                }
+                return str.join('.');
+            }
+        });
+
         app.controller('AppCtrl', ['$scope', '$mdDialog', '$http', '$log', function ($scope, $mdDialog, $http, $log) {
             $scope.iconUrl = icons[Math.floor(Math.random() * icons.length)];
+            $scope.sortOptions = [
+                {id: 1, title: 'цена: по возрастанию'},
+                {id: 2, title: 'цена: по убыванию'}
+            ];
 
             $scope.loading = false;
 
@@ -73,14 +94,13 @@
                 $scope.loading = true;
                 $http.get('/api/catalog?q=' + text)
                         .then(function(response) {
-                            console.log(response.data);
                             $scope.items = response.data;
                             $scope.loading = false;
                         });
             };
 
             $scope.showAlert = function(ev) {
-                alert('TBD');
+                alert('По различным вопросам пишите на почту: contact@all-airsoft.ru');
             };
 
             // sandbox
@@ -114,16 +134,16 @@
 
             function loadAll() {
                 var repos = [
-                    {
-                        'name': 'Cyma Glock 18c',
-                        'watchers': '12',
-                        'shop': 'рога и копыта'
-                    },
-                    {
-                        'name': 'LCT AK-47',
-                        'watchers': '47',
-                        'shop': 'ооо пупкин'
-                    }
+//                    {
+//                        'name': 'Cyma Glock 18c',
+//                        'watchers': '12',
+//                        'shop': 'рога и копыта'
+//                    },
+//                    {
+//                        'name': 'LCT AK-47',
+//                        'watchers': '47',
+//                        'shop': 'ооо пупкин'
+//                    }
                 ];
                 return repos.map(function (repo) {
                     repo.value = repo.name.toLowerCase();
@@ -138,7 +158,6 @@
                     return (item.value.indexOf(lowercaseQuery) === 0);
                 };
             }
-
         }]);
     </script>
 </head>
@@ -152,7 +171,7 @@
                 <md-icon md-svg-icon="{{iconUrl}}"></md-icon>
             </md-button>
 
-            <h1 style="padding-top:10px">Каталог</h1>
+            <h1 style="padding-top:10px"><a href="/">All-Airsoft.ru</a></h1>
         </div>
 
         <!--<md-input-container md-no-float class="md-accent" flex="50" style="padding-bottom:0px;margin-left:200px">-->
@@ -191,7 +210,21 @@
             </form>
             <!--</div>-->
         <!--</md-input-container>-->
-        <span flex> </span>
+        <span flex></span>
+
+        <!-- pluso share buttons -->
+        <!--<script type="text/javascript">(function() {-->
+            <!--if (window.pluso)if (typeof window.pluso.start == "function") return;-->
+            <!--if (window.ifpluso==undefined) { window.ifpluso = 1;-->
+                <!--var d = document, s = d.createElement('script'), g = 'getElementsByTagName';-->
+                <!--s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;-->
+                <!--s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';-->
+                <!--var h=d[g]('body')[0];-->
+                <!--h.appendChild(s);-->
+            <!--}})();</script>-->
+        <!--<div class="pluso" style="margin-right:20px;" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,google" data-url="http://all-airsoft.ru" data-title="All-Airsoft.ru - Самый большой каталог страйкбольного снаряжения со всех интернет магазинов страны" data-description="описание страницы"></div>-->
+        <!-- pluso share buttons -->
+
         <md-button class="md-primary md-raised" ng-click="showAlert($event)">
             Обратная связь
         </md-button>
@@ -208,22 +241,38 @@
     </md-sidenav>
 
     <div layout="column" flex id="content">
+
         <md-content layout="column" flex class="md-padding">
 
-            <div style="height: 8px"><md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear></div>
+            <div style="height:8px"><md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear></div>
 
-            <div class='md-padding' layout="row" layout-wrap>
+            <div layout-wrap layout-gt-sm="row" style="margin-left: 20px">
+                <div flex-gt-sm="15">
+                    <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1" ng-model="data.cb1" ng-init="data.cb1 = true">в наличии</md-checkbox>
+                </div>
 
-                <div ng-show="!items.length">нет продуктов, удовлетворящих вашему запросу</div>
+                <md-input-container flex-gt-sm="25" style="top:-15px">
+                    <md-select ng-model="selectedSortOptions">
+                        <md-option ng-value="option.id" ng-repeat="option in sortOptions" ng-selected="$first">{{ option.title }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div flex-gt-sm="45" style="position:relative;top:10px;padding-left:20px">
+                    <div ng-show="items.length > 0">Найдено: <b>{{items.length}}</b></div>
+                    <div ng-show="!items.length">нет продуктов, удовлетворящих вашему запросу</div>
+                </div>
+            </div>
+
+            <div class='md-padding' layout="row" style="padding-top:40px" layout-wrap>
 
                 <md-card style="width: 200px;" ng-repeat="item in items">
-                    <a href="{{item.link}}"><img src="{{item.photo}}" class="md-card-image" alt=""></a>
+                    <a href="/api/redirect?url={{item.link}}" target="_blank"><img src="{{item.photo}}" class="md-card-image" alt=""></a>
                     <md-card-content>
-                        <div><a href="{{item.link}}">{{item.title}}</a></div>
-                        <div class="md-body-1">{{item.producer}}</div>
-                        <div class="md-headline">{{item.price}} руб.</div>
-                        <span class="md-caption">Магазин: airsoft-rus.ru</span>
-                        <span class="md-caption">Просмотров: 12</span>
+                        <div><a href="/api/redirect?url={{item.link}}" target="_blank">{{item.title}}</a></div>
+                        <div class="md-body-1">{{item.made}}</div>
+                        <div class="md-headline">{{item.price | prettyPrice}} руб.</div>
+                        <span class="md-caption">Магазин: {{item.store}}</span>
+                        <!--<span class="md-caption">Просмотров: 12</span>-->
                     </md-card-content>
                     <!--<div class="md-actions" layout="row" layout-align="end center">-->
                         <!--<md-button>Save</md-button>-->

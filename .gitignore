@@ -1,10 +1,8 @@
-*.pyc
-env
 env2
 env3
-credential.txt
 secret
 .DS_Store
-server/node_modules/*
 producers/__pycache__/
 server/node_modules/
+docker-compose.yml
+
