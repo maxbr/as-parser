@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web-green-a:
+    size: s1
+    env_file:
+      - ./.prod/kafka.env
+      - ./.prod/db.env
+  varnish-green:
+    size: s3
+  haproxy:
+    fip: 209.177.88.182
+    size: s2
+    env_file:
+      - ./.prod/ssl.env
+      - ./.prod/stats.env

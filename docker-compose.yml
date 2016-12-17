@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web-green-a:
+    image: maxbr/as-web:latest
+  varnish-green:
+    image: maxbr/as-varnish:latest
+    links:
+      - web-green-a:web-green-a
+    depends_on:
+      - web-green-a
+    environment:
+      - BACKEND_HOST_A=web-green-a
+  haproxy:
+    image: maxbr/as-haproxy:latest
+    links:
+      - varnish-green:varnish-green
+    depends_on:
+      - varnish-green
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - BACKEND_HOST_A=varnish-green
