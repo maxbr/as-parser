@@ -25,20 +25,26 @@ after_success:
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
 
-  - export REPO=maxbr/as-web
-  - docker build -t $REPO:$COMMIT server
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
-
   - export REPO=maxbr/as-consumer
   - docker build -t $REPO:$COMMIT consumers
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
 
+  - export REPO=maxbr/as-web
+  - docker build -t $REPO:$COMMIT server
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
+
   - export REPO=maxbr/as-varnish
   - docker build -t $REPO:$COMMIT varnish
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
+
+  - export REPO=maxbr/as-haproxy
+  - docker build -t $REPO:$COMMIT haproxy
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO

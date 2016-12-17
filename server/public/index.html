@@ -59,11 +59,7 @@
     </style>
     <script>
         var icons = [ // from http://www.flaticon.com/packs/solid-war-elements
-                '/img/119358.svg',
-                '/img/119325.svg',
-                '/img/119344.svg',
-                '/img/119363.svg',
-                '/img/119352.svg'
+            '/img/119358.svg', '/img/119325.svg', '/img/119344.svg', '/img/119363.svg', '/img/119352.svg'
         ];
 
         var app = angular.module('StarterApp', ['ngMaterial']);
@@ -136,12 +132,12 @@
                 var repos = [
 //                    {
 //                        'name': 'Cyma Glock 18c',
-//                        'watchers': '12',
+//                        'views': '12',
 //                        'shop': 'рога и копыта'
 //                    },
 //                    {
 //                        'name': 'LCT AK-47',
-//                        'watchers': '47',
+//                        'views': '47',
 //                        'shop': 'ооо пупкин'
 //                    }
                 ];
@@ -174,42 +170,36 @@
             <h1 style="padding-top:10px"><a href="/">All-Airsoft.ru</a></h1>
         </div>
 
-        <!--<md-input-container md-no-float class="md-accent" flex="50" style="padding-bottom:0px;margin-left:200px">-->
-            <!--<md-icon style="color:white" class="material-icons">&#xE8B6;</md-icon>-->
-            <!--<input ng-model="searchInput" ng-change="myFunc()" placeholder="Название" style="color:white;padding-left:25px;margin-left:5px">-->
-
-            <!--<div layout="row" layout-sm="column">-->
-            <form ng-submit="$event.preventDefault()" flex="45" style="margin-top:20px">
-                <md-autocomplete
-                        ng-disabled="isDisabled"
-                        md-no-cache="noCache"
-                        md-selected-item="selectedItem"
-                        md-search-text-change="searchTextChange(searchText)"
-                        md-search-text="searchText"
-                        md-selected-item-change="selectedItemChange(item)"
-                        md-items="item in querySearch(searchText)"
-                        md-item-text="item.name"
-                        md-min-length="0"
-                        placeholder="Название"
-                        md-menu-class="autocomplete-custom-template">
-                    <md-item-template>
+        <form ng-submit="$event.preventDefault()" flex="45" style="margin-top:20px">
+            <md-autocomplete
+                    ng-disabled="isDisabled"
+                    md-no-cache="noCache"
+                    md-selected-item="selectedItem"
+                    md-search-text-change="searchTextChange(searchText)"
+                    md-search-text="searchText"
+                    md-selected-item-change="selectedItemChange(item)"
+                    md-items="item in querySearch(searchText)"
+                    md-item-text="item.name"
+                    md-min-length="0"
+                    placeholder="Название"
+                    md-menu-class="autocomplete-custom-template">
+                <md-item-template>
                         <span class="item-title">
                             <md-icon md-svg-icon="http://image.flaticon.com/icons/svg/119/119336.svg"></md-icon>
                             <span> {{item.name}} </span>
                         </span>
-                        <span class="item-metadata">
+                    <span class="item-metadata">
                             <span class="item-metastat">
-                              <strong>{{item.watchers}}</strong> просмотров
+                              <strong>{{item.views}}</strong> просмотров
                             </span>
                             <span class="item-metastat">
                               <strong>{{item.shop}}</strong> магазин
                             </span>
                         </span>
-                    </md-item-template>
-                </md-autocomplete>
-            </form>
-            <!--</div>-->
-        <!--</md-input-container>-->
+                </md-item-template>
+            </md-autocomplete>
+        </form>
+
         <span flex></span>
 
         <!-- pluso share buttons -->
@@ -225,10 +215,7 @@
         <!--<div class="pluso" style="margin-right:20px;" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,google" data-url="http://all-airsoft.ru" data-title="All-Airsoft.ru - Самый большой каталог страйкбольного снаряжения со всех интернет магазинов страны" data-description="описание страницы"></div>-->
         <!-- pluso share buttons -->
 
-        <md-button class="md-primary md-raised" ng-click="showAlert($event)">
-            Обратная связь
-        </md-button>
-
+        <md-button class="md-primary md-raised" ng-click="showAlert($event)">Обратная связь</md-button>
     </div>
 </md-toolbar>
 
@@ -236,8 +223,6 @@
     <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')">
         filters
-
-
     </md-sidenav>
 
     <div layout="column" flex id="content">
@@ -248,11 +233,11 @@
 
             <div layout-wrap layout-gt-sm="row" style="margin-left: 20px">
                 <div flex-gt-sm="15">
-                    <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1" ng-model="data.cb1" ng-init="data.cb1 = true">в наличии</md-checkbox>
+                    <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1" ng-change="changeInStoreFilter()" ng-model="data.cb1" ng-init="data.cb1 = true">в наличии</md-checkbox>
                 </div>
 
                 <md-input-container flex-gt-sm="25" style="top:-15px">
-                    <md-select ng-model="selectedSortOptions">
+                    <md-select ng-model="sortFilterOption" ng-change="applySortFilter()">
                         <md-option ng-value="option.id" ng-repeat="option in sortOptions" ng-selected="$first">{{ option.title }}</md-option>
                     </md-select>
                 </md-input-container>
@@ -264,8 +249,7 @@
             </div>
 
             <div class='md-padding' layout="row" style="padding-top:40px" layout-wrap>
-
-                <md-card style="width: 200px;" ng-repeat="item in items">
+                <md-card style="width: 200px;" ng-repeat="item in items | orderBy : 'price' : sortFilterOption == 2" ng-show="item.active = data.cb1">
                     <a href="/api/redirect?url={{item.link}}" target="_blank"><img src="{{item.photo}}" class="md-card-image" alt=""></a>
                     <md-card-content>
                         <div><a href="/api/redirect?url={{item.link}}" target="_blank">{{item.title}}</a></div>
@@ -280,7 +264,6 @@
                     <!--</div>-->
                 </md-card>
             </div>
-
         </md-content>
     </div>
 </div>

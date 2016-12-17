@@ -5,4 +5,4 @@ secret
 producers/__pycache__/
 server/node_modules/
 docker-compose.yml
-
+certificate
