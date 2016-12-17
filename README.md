@@ -1,6 +1,8 @@
 AS Service
 ==========
 
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/db2d2bb3d6e34747baa24a6985c21b90)](https://www.codacy.com/app/karelov-maksim/as-service?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=maxbr/as-service&amp;utm_campaign=badger)
 [![Build Status](https://travis-ci.org/maxbr/as-parser.svg?branch=master)](https://travis-ci.org/maxbr/as-parser) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30b7a795b48840bcab2df43d05e6f0bb)](https://www.codacy.com/app/karelov-maksim/as-parser?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=maxbr/as-parser&amp;utm_campaign=Badge_Grade)
 
 ## Components
