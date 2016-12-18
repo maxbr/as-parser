@@ -43,6 +43,7 @@ services:
       - ./.prod/stats.env
   images:
     image: maxbr/as-images:latest
+    size: s2
     environment:
       - CACHE_DIR=/srv/imageproxy
       - PORT=6060

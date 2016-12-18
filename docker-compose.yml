@@ -6,8 +6,8 @@ services:
     environment:
       - PORT=5050
     env_file:
-      - ./.dev/kafka.env
-      - ./.dev/db.env
+      - ./.prod/kafka.env
+      - ./.prod/db.env
     ports:
       - "5050:5050"
   cache:
@@ -43,8 +43,8 @@ services:
       - IMAGE_CACHE_HOST=images
       - IMAGE_CACHE_PORT=6060
     env_file:
-      - ./.dev/ssl.env
-      - ./.dev/stats.env
+      - ./.prod/ssl.env
+      - ./.prod/stats.env
   images:
     image: local/as-images
     build: images

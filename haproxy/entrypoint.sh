@@ -39,7 +39,10 @@ backend www-images
 	server www-images-1 $IMAGE_CACHE_HOST:$IMAGE_CACHE_PORT check
 	timeout connect 5000
 	timeout check 5000
-	timeout server 30000" > $HAPROXY_CONF &&
+	timeout server 30000
+
+backend www-images-errors
+  errorfile 503 /usr/local/etc/haproxy/400.http" > $HAPROXY_CONF &&
 
 export PRIVATE_KEY="`echo $PRIVATE_KEY | sed 's/\"//g'`"
 export CERTIFICATE="`echo $CERTIFICATE | sed 's/\"//g'`"

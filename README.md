@@ -21,6 +21,6 @@ AS Service
 
 ## Deploy
 
-**dev:** ``docker-compose -p project -f docker-compose.yml -f dev.yml up -d``
+**dev:** ``docker-compose up``
 
-**hyper:** ``hyper compose up -f docker-compose.yml -f prod.yml -d -p project``
+**hyper:** ``hyper compose up -p prod -f prod.yml -d``

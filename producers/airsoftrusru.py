@@ -6,7 +6,7 @@ from io import BytesIO
 from kafka_header import *
 import time
 
-URI = 'http://www.airsoft-rus.ru'
+URI = 'http://airsoft-rus.ru'
 
 get_page_url = lambda x, uri=URI: '{}/catalog/1020/?PAGEN_1={}'.format(uri, x)
 

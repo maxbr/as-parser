@@ -15,6 +15,8 @@ ENV HAPROXY_PEM_PATH          /etc/ssl/private/domain.pem
 ENV PRIVATE_KEY               key
 ENV CERTIFICATE               certificate
 
+ADD 400.http    /usr/local/etc/haproxy/400.http
+
 ADD entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
 RUN mkdir -p /run/haproxy /var/lib/haproxy /etc/ssl/private

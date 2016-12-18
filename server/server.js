@@ -30,7 +30,7 @@ router.route('/catalog')
 
         console.log(req.query.q);
 
-        var searchText = req.query.q;
+        var searchText = req.query.q.replace('\'', '').replace('\"', '');
 
         var query = dbClient.query("select p1.* from product p1 left join product p2 on (p1.link = p2.link and p1.timestamp < p2.timestamp) where p2.timestamp is null and lower(p1.title) like lower('%" + searchText + "%');");
         var rows = [];
@@ -46,31 +46,10 @@ router.route('/catalog')
 
 router.route('/redirect')
     .get(function(req, res) {
-        console.log(req.query.url);
-
         var url = req.query.url;
-
+        console.log('Redirect to ' + url);
         res.redirect(url);
     });
-
-// router.route('/bears')
-//     .post(function(req, res) {
-//         var bear = new Bear();
-//         bear.name = req.body.name;
-//
-//         bear.save(function(err) {
-//             if (err)
-//                 res.send(err);
-//             res.json({ message: 'Bear created!' });
-//         });
-//     })
-//     .get(function(req, res) {
-//         Bear.find(function(err, bears) {
-//             if (err)
-//                 res.send(err);
-//             res.json(bears);
-//         });
-//     });
 
 app.use('/api', router);
 app.timeout = 0;
