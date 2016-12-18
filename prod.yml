@@ -1,15 +1,39 @@
 version: '2'
 services:
-  web-green-a:
+  web:
+    image: maxbr/as-web:latest
     size: s1
+    environment:
+      - PORT=5050
     env_file:
       - ./.prod/kafka.env
       - ./.prod/db.env
-  varnish-green:
+  cache:
+    image: maxbr/as-varnish:latest
     size: s3
+    links:
+      - web:web
+    depends_on:
+      - web
+    environment:
+      - BACKEND_HOST_A=web
+      - BACKEND_PORT=5050
+      - BACKEND_CACHE_TIME=20m
+      - BACKEND_CACHE_SIZE=64m
   haproxy:
+    image: maxbr/as-haproxy:latest
     fip: 209.177.88.182
     size: s2
+    links:
+      - cache:cache
+    depends_on:
+      - cache
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - BACKEND_HOST_A=cache
+      - BACKEND_PORT=6081
     env_file:
       - ./.prod/ssl.env
       - ./.prod/stats.env

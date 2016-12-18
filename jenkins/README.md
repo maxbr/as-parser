@@ -3,14 +3,29 @@ Jenkins
 
 ## Prepare
 
-Get the current configuration and save it locally
-curl -X GET http://user:password@hudson.server.org/job/myjobname/config.xml -o mylocalconfig.xml
- 
-Update the configuration via posting a local configuration file
-curl -X POST http://user:password@hudson.server.org/job/myjobname/config.xml --data-binary "@mymodifiedlocalconfig.xml"
- 
-Creating a new job via posting a local configuration file
-curl -X POST "http://user:password@hudson.server.org/createItem?name=newjobname" --data-binary "@newconfig.xml" -H "Content-Type: text/xml"
+### Tools
 
-Install plugin
-curl -X POST -d '<jenkins><install plugin="git@2.0" /></jenkins>' --header 'Content-Type: text/xml' http://localhost:8080/pluginManager/installNecessaryPlugins
+**Install hyper cli:**
+
+```
+cd /sandbox
+wget https://hyper-install.s3.amazonaws.com/hyper-linux-x86_64.tar.gz
+tar xzf hyper-linux-x86_64.tar.gz
+rm hyper-linux-x86_64.tar.gz
+chmod +x hyper
+mkdir .hyper
+echo "{\"auths\":{},\"clouds\":{\"tcp://us-west-1.hyper.sh:443\":{\"accesskey\":\"$HYPER_ACCESS_KEY\",\"secretkey\":\"$HYPER_SECRET_KEY\"}}}" > .hyper/config.json
+```
+
+### Plugins
+  * [Git Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin)
+  * [Workspace Cleanup Plugin](http://wiki.jenkins-ci.org/display/JENKINS/Workspace+Cleanup+Plugin)
+  * [Job DSL](https://wiki.jenkins-ci.org/display/JENKINS/Job+DSL+Plugin)
+  * [Environment Inject Plugin](https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin)
+
+### Seed job
+
+**Create job:**
+```
+curl -X POST "https://${USER}:${PASS}@{URL}/createItem?name=Seed_Job" --data-binary "@seed.xml" -H "Content-Type: text/xml"
+```

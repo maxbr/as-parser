@@ -14,13 +14,13 @@ AS Service
 ## Related links
 * Github - https://github.com/maxbr/as-service
 * Docker hub - https://hub.docker.com/r/maxbr/as-producer
-* Jenkins - https://jenkins-maxbr.rhcloud.com
+* Jenkins - https://jenkins.all-airsoft.ru
 * Docker service dashboard - https://console.hyper.sh
 * Kafka dashboard - https://api.cloudkarafka.com
 * Travis CI - https://travis-ci.org/maxbr/as-service
 
 ## Deploy
 
-**dev:** ``docker-compose -f docker-compose.yml -f dev.yml up -d -p project``
+**dev:** ``docker-compose -p project -f docker-compose.yml -f dev.yml up -d``
 
 **hyper:** ``hyper compose up -f docker-compose.yml -f prod.yml -d -p project``

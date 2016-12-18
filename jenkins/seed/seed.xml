@@ -1,0 +1,523 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.openshift.OpenShiftApplicationUUIDJobProperty plugin="openshift@1.4">
+      <applicationUUID></applicationUUID>
+    </hudson.plugins.openshift.OpenShiftApplicationUUIDJobProperty>
+    <hudson.plugins.openshift.OpenShiftBuilderSizeJobProperty plugin="openshift@1.4">
+      <builderSize>small</builderSize>
+    </hudson.plugins.openshift.OpenShiftBuilderSizeJobProperty>
+    <hudson.plugins.openshift.OpenShiftBuilderTimeoutJobProperty plugin="openshift@1.4">
+      <builderTimeout>300000</builderTimeout>
+    </hudson.plugins.openshift.OpenShiftBuilderTimeoutJobProperty>
+    <hudson.plugins.openshift.OpenShiftBuilderTypeJobProperty plugin="openshift@1.4">
+      <builderType></builderType>
+    </hudson.plugins.openshift.OpenShiftBuilderTypeJobProperty>
+    <hudson.plugins.openshift.OpenShiftPlatformJobProperty plugin="openshift@1.4">
+      <platform>linux</platform>
+    </hudson.plugins.openshift.OpenShiftPlatformJobProperty>
+    <hudson.plugins.openshift.OpenShiftRegionJobProperty plugin="openshift@1.4">
+      <region></region>
+    </hudson.plugins.openshift.OpenShiftRegionJobProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>BRANCH</name>
+          <description></description>
+          <defaultValue>master</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>REPO_URL</name>
+          <description></description>
+          <defaultValue>https://github.com/maxbr/as-service.git</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CLOUDKARAFKA_BROKERS</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CLOUDKARAFKA_TOPIC_PREFIX</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>CLOUDKARAFKA_CA</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>CLOUDKARAFKA_CERT</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>CLOUDKARAFKA_PRIVATE_KEY</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DB_NAME</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DB_USER</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DB_HOST</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>DB_PASSWORD</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>PRIVATE_KEY</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>CERTIFICATE</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>STATS_USER</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>STATS_PASSWORD</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.0.1">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/maxbr/as-service.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>$BRANCH</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.53">
+      <targets>jenkins/jobdsl/*.groovy</targets>
+      <scriptText>def envVars = binding.variables
+
+def repoUrl = envVars[&apos;REPO_URL&apos;]
+
+def cloudKarafkaBrokers = envVars[&apos;CLOUDKARAFKA_BROKERS&apos;]
+def cloudKarafkaTopicPrefix = envVars[&apos;CLOUDKARAFKA_TOPIC_PREFIX&apos;]
+def cloudKarafkaCA = envVars[&apos;CLOUDKARAFKA_CA&apos;]
+def cloudKarafkaCert = envVars[&apos;CLOUDKARAFKA_CERT&apos;]
+def cloudKarafkaPrivateKey = envVars[&apos;CLOUDKARAFKA_PRIVATE_KEY&apos;]
+
+def dbName = envVars[&apos;DB_NAME&apos;]
+def dbUser = envVars[&apos;DB_USER&apos;]
+def dbHost = envVars[&apos;DB_HOST&apos;]
+def dbPassword = envVars[&apos;DB_PASSWORD&apos;]
+
+def sslPrivateKey = envVars[&apos;PRIVATE_KEY&apos;]
+def sslCertificate = envVars[&apos;CERTIFICATE&apos;]
+
+def statsUser = envVars[&apos;STATS_USER&apos;]
+def statsPassword = envVars[&apos;STATS_PASSWORD&apos;]
+
+def dockerComposeProject = &apos;prod&apos;
+
+
+// containers
+job(&apos;Hyper_Show_Containers&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {
+
+        }
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+hyper ps -a
+&quot;&quot;&quot;)
+    }
+}
+
+
+// images
+job(&apos;Hyper_Show_Images&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {}
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+hyper images
+&quot;&quot;&quot;)
+    }
+}
+
+
+// producers
+[&apos;airsoftrusru&apos;, &apos;sharometru&apos;, &apos;voentursnarru&apos;].each { SITE_SCRIPT -&gt;
+    job(&quot;Hyper_Run_Producer_${SITE_SCRIPT}&quot;) {
+        logRotator(-1, 100, -1, 5)
+        parameters {
+            choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+            choiceParam(&apos;TAG&apos;, [&apos;latest&apos;, &apos;dev&apos;])
+        }
+        scm {
+            git {
+                remote { url(repoUrl) }
+                branch(&apos;\$BRANCH&apos;)
+            }
+        }
+        wrappers {
+            preBuildCleanup { deleteDirectories() }
+            environmentVariables {
+                env(&apos;CLOUDKARAFKA_TOPIC_PREFIX&apos;, cloudKarafkaTopicPrefix)
+                env(&apos;CLOUDKARAFKA_BROKERS&apos;, cloudKarafkaBrokers)
+                env(&apos;ENV_FILE&apos;, &apos;env-file&apos;)
+                env(&apos;DOCKER_REPO&apos;, &apos;maxbr/as-producer&apos;)
+            }
+            maskPasswordsBuildWrapper {
+                varPasswordPairs {
+                    varPasswordPair {
+                        var(&apos;CLOUDKARAFKA_CA&apos;)
+                        password(cloudKarafkaCA)
+                    }
+                    varPasswordPair {
+                        var(&apos;CLOUDKARAFKA_CERT&apos;)
+                        password(cloudKarafkaCert)
+                    }
+                    varPasswordPair {
+                        var(&apos;CLOUDKARAFKA_PRIVATE_KEY&apos;)
+                        password(cloudKarafkaPrivateKey)
+                    }
+                }
+            }
+        }
+        steps {
+            shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+echo &quot;CLOUDKARAFKA_CA=\$CLOUDKARAFKA_CA&quot; &gt; \$ENV_FILE
+echo &quot;CLOUDKARAFKA_CERT=\$CLOUDKARAFKA_CERT&quot; &gt;&gt; \$ENV_FILE
+echo &quot;CLOUDKARAFKA_PRIVATE_KEY=\$CLOUDKARAFKA_PRIVATE_KEY&quot; &gt;&gt; \$ENV_FILE
+
+echo &quot;CLOUDKARAFKA_TOPIC_PREFIX=\$CLOUDKARAFKA_TOPIC_PREFIX&quot; &gt;&gt; \$ENV_FILE
+echo &quot;CLOUDKARAFKA_BROKERS=\$CLOUDKARAFKA_BROKERS&quot; &gt;&gt; \$ENV_FILE
+
+hyper run --size=s3 --env-file \$ENV_FILE --rm \$DOCKER_REPO:\$TAG ${SITE_SCRIPT}.py
+&quot;&quot;&quot;)
+        }
+    }
+}
+
+
+// webui
+job(&apos;Hyper_Compose_Kill&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {}
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+hyper compose rm -p ${dockerComposeProject}
+&quot;&quot;&quot;)
+    }
+}
+
+job(&apos;Hyper_Compose_Remove&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {}
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+hyper compose rm -p ${dockerComposeProject}
+&quot;&quot;&quot;)
+    }
+}
+
+job(&apos;Hyper_Compose_Up&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {}
+        environmentVariables {
+            env(&apos;CLOUDKARAFKA_TOPIC_PREFIX&apos;, cloudKarafkaTopicPrefix)
+            env(&apos;CLOUDKARAFKA_BROKERS&apos;, cloudKarafkaBrokers)
+            env(&apos;DB_NAME&apos;, dbName)
+            env(&apos;DB_USER&apos;, dbUser)
+            env(&apos;DB_HOST&apos;, dbHost)
+            env(&apos;STATS_USER&apos;, statsUser)
+        }
+        maskPasswordsBuildWrapper {
+            varPasswordPairs {
+                varPasswordPair {
+                    var(&apos;CLOUDKARAFKA_CA&apos;)
+                    password(cloudKarafkaCA)
+                }
+                varPasswordPair {
+                    var(&apos;CLOUDKARAFKA_CERT&apos;)
+                    password(cloudKarafkaCert)
+                }
+                varPasswordPair {
+                    var(&apos;CLOUDKARAFKA_PRIVATE_KEY&apos;)
+                    password(cloudKarafkaPrivateKey)
+                }
+                varPasswordPair {
+                    var(&apos;DB_PASSWORD&apos;)
+                    password(dbPassword)
+                }
+                varPasswordPair {
+                    var(&apos;PRIVATE_KEY&apos;)
+                    password(sslPrivateKey)
+                }
+                varPasswordPair {
+                    var(&apos;CERTIFICATE&apos;)
+                    password(sslCertificate)
+                }
+                varPasswordPair {
+                    var(&apos;STATS_PASSWORD&apos;)
+                    password(statsPassword)
+                }
+            }
+        }
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+PROD_DIR=.prod
+DB_ENV=\$PROD_DIR/db.env
+KAFKA_ENV=\$PROD_DIR/kafka.env
+SSL_ENV=\$PROD_DIR/ssl.env
+STATS_ENV=\$PROD_DIR/stats.env
+
+echo &quot;CLOUDKARAFKA_CA=\\&quot;\$CLOUDKARAFKA_CA\\&quot;&quot; &gt; \$KAFKA_ENV
+echo &quot;CLOUDKARAFKA_PRIVATE_KEY=\\&quot;\$CLOUDKARAFKA_PRIVATE_KEY\\&quot;&quot; &gt;&gt; \$KAFKA_ENV
+echo &quot;CLOUDKARAFKA_CERT=\\&quot;\$CLOUDKARAFKA_CERT\\&quot;&quot; &gt;&gt; \$KAFKA_ENV
+echo &quot;CLOUDKARAFKA_TOPIC_PREFIX=\\&quot;\$CLOUDKARAFKA_TOPIC_PREFIX\\&quot;&quot; &gt;&gt; \$KAFKA_ENV
+echo &quot;CLOUDKARAFKA_BROKERS=\\&quot;\$CLOUDKARAFKA_BROKERS\\&quot;&quot; &gt;&gt; \$KAFKA_ENV
+
+echo &quot;DB_NAME=\$DB_NAME&quot; &gt; \$DB_ENV
+echo &quot;DB_USER=\$DB_USER&quot; &gt;&gt; \$DB_ENV
+echo &quot;DB_HOST=\$DB_HOST&quot; &gt;&gt; \$DB_ENV
+echo &quot;DB_PASSWORD=\$DB_PASSWORD&quot; &gt;&gt; \$DB_ENV
+
+echo &quot;PRIVATE_KEY=\\&quot;\$PRIVATE_KEY\\&quot;&quot; &gt; \$SSL_ENV
+echo &quot;CERTIFICATE=\\&quot;\$CERTIFICATE\\&quot;&quot; &gt;&gt; \$SSL_ENV
+
+echo &quot;STATS_USER=\$STATS_USER&quot; &gt; \$STATS_ENV
+echo &quot;STATS_PASSWORD=\$STATS_PASSWORD&quot; &gt;&gt; \$STATS_ENV
+
+hyper compose pull -f docker-compose.yml -f prod.yml
+hyper compose up -p ${dockerComposeProject} -f prod.yml -d
+
+rm -rf \$PROD_DIR
+&quot;&quot;&quot;)
+    }
+}
+
+job(&apos;Hyper_Compose_Ps&apos;) {
+    logRotator(-1, 100, -1, 5)
+    parameters {
+        choiceParam(&apos;BRANCH&apos;, [&apos;master&apos;, &apos;dev&apos;])
+    }
+    scm {
+        git {
+            remote { url(repoUrl) }
+            branch(&apos;\$BRANCH&apos;)
+        }
+    }
+    wrappers {
+        preBuildCleanup { deleteDirectories() }
+        environmentVariables {}
+        environmentVariables {}
+    }
+    steps {
+        shell(&quot;&quot;&quot;
+source jenkins/scripts/core.sh
+
+hyper compose ps -p ${dockerComposeProject}
+&quot;&quot;&quot;)
+    }
+}
+
+
+// views
+listView(&apos;Producers&apos;) {
+    jobs {
+        regex(/Hyper_Run_Producer_.*/)
+    }
+    columns {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
+    }
+}
+
+listView(&apos;Consumers&apos;) {
+    jobs {
+        regex(/Hyper_Run_Consumer.*/)
+    }
+    columns {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
+    }
+}
+
+listView(&apos;HyperUtils&apos;) {
+    jobs {
+        name(&apos;Hyper_Show_Images&apos;)
+        name(&apos;Hyper_Show_Containers&apos;)
+    }
+    columns {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
+    }
+}
+
+listView(&apos;WebUI&apos;) {
+    jobs {
+        regex(/Hyper_Compose_.*/)
+    }
+    columns {
+        status()
+        weather()
+        name()
+        lastSuccess()
+        lastFailure()
+        lastDuration()
+        buildButton()
+    }
+}</scriptText>
+      <usingScriptText>false</usingScriptText>
+      <ignoreExisting>false</ignoreExisting>
+      <ignoreMissingFiles>false</ignoreMissingFiles>
+      <failOnMissingPlugin>false</failOnMissingPlugin>
+      <unstableOnDeprecation>false</unstableOnDeprecation>
+      <removedJobAction>DELETE</removedJobAction>
+      <removedViewAction>DELETE</removedViewAction>
+      <lookupStrategy>JENKINS_ROOT</lookupStrategy>
+    </javaposse.jobdsl.plugin.ExecuteDslScripts>
+  </builders>
+  <publishers>
+    <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.32">
+      <patterns class="empty-list"/>
+      <deleteDirs>false</deleteDirs>
+      <skipWhenFailed>false</skipWhenFailed>
+      <cleanWhenSuccess>true</cleanWhenSuccess>
+      <cleanWhenUnstable>true</cleanWhenUnstable>
+      <cleanWhenFailure>true</cleanWhenFailure>
+      <cleanWhenNotBuilt>true</cleanWhenNotBuilt>
+      <cleanWhenAborted>true</cleanWhenAborted>
+      <notFailBuild>false</notFailBuild>
+      <cleanupMatrixParent>false</cleanupMatrixParent>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.WsCleanup>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.32">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+  </buildWrappers>
+</project>
