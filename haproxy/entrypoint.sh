@@ -3,6 +3,7 @@
 echo "global
 	maxconn 2048
 	tune.ssl.default-dh-param 2048
+
 defaults
 	mode http
 	option forwardfor
@@ -11,19 +12,31 @@ defaults
 	stats uri $STATS_URI
 	stats realm Haproxy\ Statistics
 	stats auth $STATS_USER:$STATS_PASSWORD
+
 frontend www-http
 	bind :${HAPROXY_HTTP_BIND_PORT}
 	reqadd X-Forwarded-Proto:\ http
-	default_backend www-backend
+	default_backend www-cache-backend
 	timeout client 30000
+
 frontend www-https
 	bind :$HAPROXY_HTTPS_BIND_PORT ssl crt $HAPROXY_PEM_PATH
 	reqadd X-Forwarded-Proto:\ https
-	default_backend www-backend
+	acl has_image_cache_uri path_beg /image_cache
+	use_backend www-images if has_image_cache_uri
+	default_backend www-cache-backend
 	timeout client 30000
-backend www-backend
+
+backend www-cache-backend
 	redirect scheme https if !{ ssl_fc }
-	server www-1 $BACKEND_HOST_A:$BACKEND_PORT check
+	server www-cache-backend-1 $BACKEND_HOST_A:$BACKEND_PORT check
+	timeout connect 5000
+	timeout check 5000
+	timeout server 30000
+
+backend www-images
+	redirect scheme https if !{ ssl_fc }
+	server www-images-1 $IMAGE_CACHE_HOST:$IMAGE_CACHE_PORT check
 	timeout connect 5000
 	timeout check 5000
 	timeout server 30000" > $HAPROXY_CONF &&

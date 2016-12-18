@@ -26,14 +26,23 @@ services:
     size: s2
     links:
       - cache:cache
+      - images:images
     depends_on:
       - cache
+      - images
     ports:
       - "80:80"
       - "443:443"
     environment:
       - BACKEND_HOST_A=cache
       - BACKEND_PORT=6081
+      - IMAGE_CACHE_HOST=images
+      - IMAGE_CACHE_PORT=6060
     env_file:
       - ./.prod/ssl.env
       - ./.prod/stats.env
+  images:
+    image: maxbr/as-images:latest
+    environment:
+      - CACHE_DIR=/srv/imageproxy
+      - PORT=6060

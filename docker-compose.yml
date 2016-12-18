@@ -2,6 +2,7 @@ version: '2'
 services:
   web:
     image: local/as-web
+    build: server
     environment:
       - PORT=5050
     env_file:
@@ -11,6 +12,7 @@ services:
       - "5050:5050"
   cache:
     image: local/as-varnish
+    build: varnish
     links:
       - web:web
     depends_on:
@@ -25,16 +27,29 @@ services:
       - "6082:6082"
   haproxy:
     image: local/as-haproxy
+    build: haproxy
     links:
       - cache:cache
+      - images:images
     depends_on:
       - cache
+      - images
     ports:
       - "80:80"
       - "443:443"
     environment:
       - BACKEND_HOST_A=cache
       - BACKEND_PORT=6081
+      - IMAGE_CACHE_HOST=images
+      - IMAGE_CACHE_PORT=6060
     env_file:
       - ./.dev/ssl.env
       - ./.dev/stats.env
+  images:
+    image: local/as-images
+    build: images
+    ports:
+      - "6060:6060"
+    environment:
+      - CACHE_DIR=/srv/imageproxy
+      - PORT=6060
