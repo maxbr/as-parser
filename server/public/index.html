@@ -12,6 +12,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngInfiniteScroll/1.2.2/ng-infinite-scroll.min.js"></script>
     <style>
         .md-toolbar-tools h1 {
             font-size: inherit;
@@ -62,7 +64,7 @@
             '/img/119358.svg', '/img/119325.svg', '/img/119344.svg', '/img/119363.svg', '/img/119352.svg'
         ];
 
-        var app = angular.module('StarterApp', ['ngMaterial']);
+        var app = angular.module('StarterApp', ['ngMaterial', 'infinite-scroll']);
 
         app.filter("prettyPrice", function(){
             return function(num){
@@ -94,30 +96,48 @@
         app.controller('AppCtrl', ['$scope', '$mdDialog', '$http', '$log', function ($scope, $mdDialog, $http, $log) {
             $scope.iconUrl = icons[Math.floor(Math.random() * icons.length)];
             $scope.sortOptions = [
-                {id: 1, title: 'цена: по возрастанию'},
-                {id: 2, title: 'цена: по убыванию'}
+                {id: 0, title: 'цена: по возрастанию'},
+                {id: 1, title: 'цена: по убыванию'}
             ];
 
-            $scope.loading = false;
+            $scope.isSessionStart = 1;
 
-            function myFunc(text) {
+            $scope.loading = false;
+            $scope.items = [];
+
+            $scope.myFunc = function(text, reset, order) {
+                var query = $scope.searchText || '';
+                var offset = reset ? 0 : $scope.items.length;
+                var limit = 50;
                 $scope.loading = true;
-                $http.get('/api/catalog?q=' + text)
+
+                $http.get('/api/catalog?search=' + query + '&offset=' + offset + '&limit=' + limit + '&order=' + order)
                         .then(function(response) {
-                            $scope.items = response.data;
+                            if (reset) {
+                                $scope.items = response.data;
+                            } else {
+                                $scope.items = $scope.items.concat(response.data);
+                            }
                             $scope.loading = false;
                         });
             };
 
-            $scope.imgError = function() {
-                return '123';
+            $scope.changeSortFilterOption = function() {
+                console.log('1233');
+                if ($scope.isSessionStart == 0) {
+                    $scope.myFunc($scope.searchText, true, $scope.sortFilterOption == 0);
+                } else {
+                    $scope.isSessionStart = $scope.isSessionStart - 1;
+                }
             };
 
-            $scope.imgLoaded = function() {
-                return '123';
+            $scope.loadMoreResults = function() {
+                console.log('hello ' + $scope.searchText);
+
+                $scope.myFunc($scope.searchText, false, $scope.sortFilterOption == 0);
             };
 
-            $scope.showAlert = function(ev) {
+            $scope.showAlert = function() {
                 alert('По различным вопросам пишите на почту: contact@all-airsoft.ru');
             };
 
@@ -129,7 +149,7 @@
             $scope.selectedItemChange = selectedItemChange;
             $scope.searchTextChange = searchTextChange;
 
-            function querySearch (query) {
+            function querySearch(query) {
                 var results = query ? $scope.repos.filter( createFilterFor(query) ) : $scope.repos,
                         deferred;
                 if ($scope.simulateQuery) {
@@ -142,7 +162,8 @@
             }
 
             function searchTextChange(text) {
-                myFunc(text);
+                console.log($scope.sortFilterOption);
+                $scope.myFunc(text, true, $scope.sortFilterOption == 0);
                 $log.info('Text changed to ' + text);
             }
 
@@ -156,11 +177,6 @@
 //                        'name': 'Cyma Glock 18c',
 //                        'views': '12',
 //                        'shop': 'рога и копыта'
-//                    },
-//                    {
-//                        'name': 'LCT AK-47',
-//                        'views': '47',
-//                        'shop': 'ооо пупкин'
 //                    }
                 ];
                 return repos.map(function (repo) {
@@ -181,118 +197,112 @@
 </head>
 
 <body layout="column" ng-controller="AppCtrl">
+    <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+            <div layout="row" flex="25">
+                <md-button class="md-icon-button" aria-label="Icon">
+                    <md-icon md-svg-icon="{{ iconUrl }}"></md-icon>
+                </md-button>
 
-<md-toolbar layout="row">
-    <div class="md-toolbar-tools">
-        <div layout="row" flex="25">
-            <md-button class="md-icon-button" aria-label="Icon">
-                <md-icon md-svg-icon="{{iconUrl}}"></md-icon>
-            </md-button>
+                <h1 style="padding-top:10px"><a href="/">All-Airsoft.ru</a></h1>
+            </div>
+            <form ng-submit="$event.preventDefault()" flex="45" style="margin-top:20px">
+                <md-autocomplete
+                        ng-disabled="isDisabled"
+                        md-no-cache="noCache"
+                        md-selected-item="selectedItem"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-search-text="searchText"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in querySearch(searchText)"
+                        md-item-text="item.name"
+                        md-min-length="0"
+                        placeholder="Название"
+                        ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+                        md-menu-class="autocomplete-custom-template">
+                    <md-item-template>
+                            <span class="item-title">
+                                <md-icon md-svg-icon="http://image.flaticon.com/icons/svg/119/119336.svg"></md-icon>
+                                <span>{{ item.name }}</span>
+                            </span>
+                        <span class="item-metadata">
+                                <span class="item-metastat">
+                                  <strong>{{ item.views }}</strong> просмотров
+                                </span>
+                                <span class="item-metastat">
+                                  <strong>{{ item.shop }}</strong> магазин
+                                </span>
+                            </span>
+                    </md-item-template>
+                </md-autocomplete>
+            </form>
+            <span flex></span>
+            <md-button class="md-primary md-raised" ng-click="showAlert($event)">Обратная связь</md-button>
+        </div>
+    </md-toolbar>
 
-            <h1 style="padding-top:10px"><a href="/">All-Airsoft.ru</a></h1>
+    <div layout="row" layout-fill flex>
+        <div layout="column" flex="25">
+            filters
         </div>
 
-        <form ng-submit="$event.preventDefault()" flex="45" style="margin-top:20px">
-            <md-autocomplete
-                    ng-disabled="isDisabled"
-                    md-no-cache="noCache"
-                    md-selected-item="selectedItem"
-                    md-search-text-change="searchTextChange(searchText)"
-                    md-search-text="searchText"
-                    md-selected-item-change="selectedItemChange(item)"
-                    md-items="item in querySearch(searchText)"
-                    md-item-text="item.name"
-                    md-min-length="0"
-                    placeholder="Название"
-                    md-menu-class="autocomplete-custom-template">
-                <md-item-template>
-                        <span class="item-title">
-                            <md-icon md-svg-icon="http://image.flaticon.com/icons/svg/119/119336.svg"></md-icon>
-                            <span> {{item.name}} </span>
-                        </span>
-                    <span class="item-metadata">
-                            <span class="item-metastat">
-                              <strong>{{item.views}}</strong> просмотров
-                            </span>
-                            <span class="item-metastat">
-                              <strong>{{item.shop}}</strong> магазин
-                            </span>
-                        </span>
-                </md-item-template>
-            </md-autocomplete>
-        </form>
-
-        <span flex></span>
-
-        <!-- pluso share buttons -->
-        <!--<script type="text/javascript">(function() {-->
-            <!--if (window.pluso)if (typeof window.pluso.start == "function") return;-->
-            <!--if (window.ifpluso==undefined) { window.ifpluso = 1;-->
-                <!--var d = document, s = d.createElement('script'), g = 'getElementsByTagName';-->
-                <!--s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;-->
-                <!--s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';-->
-                <!--var h=d[g]('body')[0];-->
-                <!--h.appendChild(s);-->
-            <!--}})();</script>-->
-        <!--<div class="pluso" style="margin-right:20px;" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=01" data-services="vkontakte,odnoklassniki,facebook,google" data-url="http://all-airsoft.ru" data-title="All-Airsoft.ru - Самый большой каталог страйкбольного снаряжения со всех интернет магазинов страны" data-description="описание страницы"></div>-->
-        <!-- pluso share buttons -->
-
-        <md-button class="md-primary md-raised" ng-click="showAlert($event)">Обратная связь</md-button>
-    </div>
-</md-toolbar>
-
-<div layout="row" flex>
-    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
-                md-is-locked-open="$mdMedia('gt-sm')">
-        filters
-    </md-sidenav>
-
-    <div layout="column" flex id="content">
-
-        <md-content layout="column" flex class="md-padding">
-
-            <div style="height:8px"><md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear></div>
-
-            <div layout-wrap layout-gt-sm="row" style="margin-left: 20px">
-                <div flex-gt-sm="15">
-                    <md-checkbox ng-model="inStoreCheckbox" aria-label="Checkbox 1" ng-model="inStoreCheckbox" ng-init="inStoreCheckbox = true">в наличии</md-checkbox>
+        <div layout="column" layout-fill flex>
+            <div layout="column" flex="10">
+                <div layout="row">
+                    <div flex="15">
+                        <md-checkbox ng-model="inStoreCheckbox" aria-label="Checkbox 1" ng-model="inStoreCheckbox" ng-init="inStoreCheckbox = true">в наличии</md-checkbox>
+                    </div>
+                    <div flex="25" style="position:relative; top: -15px">
+                        <md-input-container>
+                            <md-select ng-model="sortFilterOption" ng-change="changeSortFilterOption()">
+                                <md-option ng-value="option.id" ng-repeat="option in sortOptions" ng-selected="$first">{{ option.title }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex="45" style="position:relative;top:10px;left:20px">
+                        <div ng-show="items.length > 0">Показано: <b>{{ items.length }}</b></div>
+                        <div ng-show="!items.length">нет товаров, удовлетворяющих вашему запросу</div>
+                    </div>
                 </div>
-
-                <md-input-container flex-gt-sm="25" style="top:-15px">
-                    <md-select ng-model="sortFilterOption">
-                        <md-option ng-value="option.id" ng-repeat="option in sortOptions" ng-selected="$first">{{ option.title }}</md-option>
-                    </md-select>
-                </md-input-container>
-
-                <div flex-gt-sm="45" style="position:relative;top:10px;padding-left:20px">
-                    <div ng-show="items.length > 0">Найдено: <b>{{ items.length }}</b></div>
-                    <div ng-show="!items.length">нет товаров, удовлетворяющих вашему запросу</div>
+                <div layout="column" style="height: 30px;">
+                    <md-progress-linear flex ng-show="loading" md-mode="indeterminate"></md-progress-linear>
                 </div>
             </div>
 
-            <div class='md-padding' layout="row" style="padding-top:40px" layout-wrap>
-                <md-card style="width: 200px;" ng-repeat="item in items | orderBy : 'price' : sortFilterOption == 2" ng-show="inStoreCheckbox == false || item.active == inStoreCheckbox">
-                    <a href="/api/redirect?url={{ item.link }}" target="_blank">
-                        <img check-image ng-src="/image_cache/{{ item.photo }}" class="md-card-image" alt="{{ item.title }}" style="width:50%;margin:20% 0 20% 25%;">
-                    </a>
-                    <md-card-content>
-                        <div>
-                            <a href="/api/redirect?url={{ item.link }}" target="_blank">{{ item.title }}</a>
+            <md-content flex layout="row" layout-wrap
+                        infinite-scroll="loadMoreResults()" infinite-scroll-distance="0" infinite-scroll-disabled="false">
+                <div flex="25" ng-repeat="item in items | orderBy : 'price' : sortFilterOption == 1" ng-show="inStoreCheckbox == false || item.active == inStoreCheckbox">
+                    <md-card layout="column" flex class="md-whiteframe-6dp md-padding">
+                        <div flex="30">
+                            <a href="/api/redirect?url={{ item.link }}" target="_blank">
+                                <img check-image ng-src="/img/no-war.svg" class="md-card-image" alt="{{ item.title }}">
+                                <!--<img check-image ng-src="/image_cache/{{ item.photo }}" class="md-card-image" alt="{{ item.title }}" style="width:50%;margin:20% 0 20% 25%;">-->
+                            </a>
                         </div>
-                        <div class="md-body-1">{{ item.made }}</div>
-                        <div class="md-headline">{{ item.price | prettyPrice }} руб.</div>
-                        <span class="md-caption">Магазин: {{ item.store }}</span>
-                        <!--<span class="md-caption">Просмотров: 12</span>-->
-                    </md-card-content>
-                    <!--<div class="md-actions" layout="row" layout-align="end center">-->
-                        <!--<md-button>Save</md-button>-->
-                        <!--<md-button>View</md-button>-->
-                    <!--</div>-->
-                </md-card>
-            </div>
-        </md-content>
+                        <div flex="10">
+                            <a href="/api/redirect?url={{ item.link }}" title="{{ item.title }}" target="_blank">{{ item.title }}</a>
+                        </div>
+                        <div layout="row" flex="5">
+                            <div class="md-headline">{{ item.price | prettyPrice }} руб.</div>
+                            <span flex></span>
+                            <div flex>
+                                <a href="/api/redirect?url={{ item.link }}">
+                                    <img ng-show="{{ item.active }}" title="В наличии, доступно к заказу" src="/img/cart-ok.svg" style="width:30px;"/>
+                                    <img ng-show="{{ !item.active }}" title="Нет в наличии" src="/img/cart-err.svg" style="width:30px;"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div flex="10" layout="column">
+                            <div class="md-body-1">{{ item.made }}</div>
+                            <span class="md-caption">Модель: qwerty</span>
+                            <span class="md-caption">Вес: 3 кг, Скорость: 120 м/с</span>
+                            <span class="md-caption">Магазин: <a href="">{{ item.store }}</a></span>
+                            <span class="md-caption">Просмотров: 12</span>
+                        </div>
+                    </md-card>
+                </div>
+            </md-content>
+        </div>
     </div>
-</div>
-
 </body>
 </html>

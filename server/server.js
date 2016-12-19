@@ -25,14 +25,38 @@ router.get('/', function (req, res) {
     res.json({message: 'hooray! welcome to our api!'})
 });
 
+function isNormalInteger(str) {
+    return /^\+?(0|[1-9]\d*)$/.test(str);
+}
+
 router.route('/catalog')
     .get(function(req, res) {
 
-        console.log(req.query.q);
+        var searchText = req.query.search || '';
 
-        var searchText = req.query.q.replace('\'', '').replace('\"', '');
+        var offset = req.query.offset;
+        offset = isNormalInteger(offset) ? offset : 0;
 
-        var query = dbClient.query("select p1.* from product p1 left join product p2 on (p1.link = p2.link and p1.timestamp < p2.timestamp) where p2.timestamp is null and lower(p1.title) like lower('%" + searchText + "%');");
+        var limit = req.query.limit;
+        limit = isNormalInteger(limit) ? limit : 30;
+
+        var order = req.query.order == 'true';
+
+        console.log(searchText + ' ' + offset + ' ' + limit);
+
+        var searchArray = searchText.split(' ');
+        var likeFilters = '';
+
+        if ( !(searchArray.length == 1 && searchArray[0] === '') ) {
+            searchArray.forEach(function (val) {
+                likeFilters += "AND LOWER(p1.title) LIKE LOWER('%" + val + "%') ";
+            });
+        }
+        var sqlQuery = "SELECT p1.* FROM product p1 LEFT JOIN product p2 ON (p1.link = p2.link AND p1.timestamp < p2.timestamp) WHERE p2.timestamp IS NULL " + likeFilters + "ORDER BY p1.price " + (order ? "ASC" : "DESC") + " OFFSET " + offset + " LIMIT " + limit + ";";
+
+        console.log(sqlQuery);
+
+        var query = dbClient.query(sqlQuery);
         var rows = [];
 
         query.on('row', function(row) {
