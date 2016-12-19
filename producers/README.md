@@ -41,16 +41,16 @@ For container run you need to pass the following environment variables:
 
 ## Supported stores
 
-| name        |      link              |  script         |
-|-------------|:----------------------:|:---------------:|
-| airsoft rus | http://airsoft-rus.ru  | airsoftrusru.py |
-| sharomet    | http://sharomet.ru     | sharometru.py   |
-| voentursnar | http://voentursnar.ru  | voentursnar.py  |
+|      link              |  script         |
+|:----------------------:|:---------------:|
+| http://airsoft-rus.ru  | airsoftrusru.py |
+| http://sharomet.ru     | sharometru.py   |
+| http://voentursnar.ru  | voentursnar.py  |
 
 backlog: *airsoftbox.ru, strikeplanet.ru, airsoftstore.ru, air-wars.ru, kalibr603.ru, 6mm.ru, kugel.ru*
 
 ## Related links
 
   * [maxbr/as-producer image on Docker Hub](https://hub.docker.com/r/maxbr/as-producer)
-  * [maxbr/as-parser build page on Travis CI](https://travis-ci.org/maxbr/as-parser)
+  * [maxbr/as-producer build page on Travis CI](https://travis-ci.org/maxbr/as-service)
   

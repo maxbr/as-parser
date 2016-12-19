@@ -42,8 +42,6 @@ router.route('/catalog')
 
         var order = req.query.order == 'true';
 
-        console.log(searchText + ' ' + offset + ' ' + limit);
-
         var searchArray = searchText.split(' ');
         var likeFilters = '';
 
@@ -52,9 +50,16 @@ router.route('/catalog')
                 likeFilters += "AND LOWER(p1.title) LIKE LOWER('%" + val + "%') ";
             });
         }
-        var sqlQuery = "SELECT p1.* FROM product p1 LEFT JOIN product p2 ON (p1.link = p2.link AND p1.timestamp < p2.timestamp) WHERE p2.timestamp IS NULL " + likeFilters + "ORDER BY p1.price " + (order ? "ASC" : "DESC") + " OFFSET " + offset + " LIMIT " + limit + ";";
+        var sqlQuery = "SELECT p1.* FROM product p1 \
+            LEFT JOIN product p2 \
+            ON (p1.link = p2.link AND p1.timestamp < p2.timestamp) \
+            WHERE p2.timestamp IS NULL \
+            " + likeFilters + "\
+            ORDER BY p1.price " + (order ? "ASC" : "DESC") + "\
+            OFFSET " + offset + "\
+            LIMIT " + limit + ";";
 
-        console.log(sqlQuery);
+        console.log('DB QUERY: ' + sqlQuery);
 
         var query = dbClient.query(sqlQuery);
         var rows = [];
@@ -63,7 +68,7 @@ router.route('/catalog')
             rows.push(row);
         });
         query.on('end', function(result) {
-            console.log(result.rowCount + ' rows were received');
+            console.log('DB ROW COUNT: ' + result.rowCount);
             res.json(rows);
         });
     });

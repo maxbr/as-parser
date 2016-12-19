@@ -1,11 +1,22 @@
+CREATE SEQUENCE product_id_seq;
+
 CREATE TABLE product(
-  link varchar(500),
-  title varchar(150),
-  made varchar(50),
-  code varchar(30),
-  price int,
-  photo varchar(500),
-  store varchar(100),
-  timestamp int,
-  active bool
+  id INTEGER NOT NULL DEFAULT nextval('product_id_seq'),
+  link VARCHAR(300) NOT NULL,
+  title VARCHAR(100) NOT NULL,
+  brand VARCHAR(50) DEFAULT NULL,
+  code VARCHAR(50) DEFAULT NULL,
+  weight NUMERIC(1) DEFAULT NULL,
+  power SMALLINT DEFAULT NULL,
+  blowback BOOLEAN DEFAULT NULL,
+  power_source SMALLINT DEFAULT NULL,
+  hopup SMALLINT DEFAULT NULL,
+  length SMALLINT DEFAULT NULL,
+  price INTEGER DEFAULT 0,
+  availability BOOLEAN DEFAULT FALSE,
+  photo VARCHAR(500) DEFAULT NULL,
+  store VARCHAR(100) NOT NULL,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE UNIQUE INDEX product_link_index ON product (link);

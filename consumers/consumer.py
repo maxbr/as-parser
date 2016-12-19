@@ -5,10 +5,10 @@ from kafka.errors import KafkaError
 import os, ssl
 import json
 import psycopg2
+import logging
 
-#
-# run locally: set -o allexport && source ../env2 && python3 consumer.py
-#
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
+
 
 def del_quote(s):
   return s.replace('"', '')
@@ -52,18 +52,45 @@ consumer = KafkaConsumer(topic_prefix + 'default',
 conn = psycopg2.connect("dbname='{}' user='{}' host='{}' password='{}'".format(db_name, db_user, db_host, db_password))
 cur = conn.cursor()
 
-print('Start consuming')
+success = 0
+errors = 0
+
+logging.info('Start consuming')
 for message in consumer:
   try:
+    logging.info('Try to read new message: {}'.format(message.value.decode('utf-8')))
+
     record = json.loads(message.value.decode('utf-8'))
 
-    print(record['title'])
-    cur.execute("INSERT INTO product (link, title, made, code, price, photo, store, timestamp, active) VALUES "
-                "($${}$$, $${}$$, $${}$$, $${}$$, {}, $${}$$, $${}$$, {}, {})".format(record['link'], record['title'],
-                                                                          record['made'], record['code'],
-                                                                          record['price'], record['photos'][0],
-                                                                          record['store'], record['timestamp'],
-                                                                          record['active']))
+    link = record['link']
+    title = record['title']
+    brand = record['brand'] or 'NULL'
+    code = record['code'] or 'NULL'
+    weight = record['weight'] or 'NULL'
+    power = record['power'] or 'NULL'
+    blowback = record['blowback'] or 'NULL'
+    power_source = record['power_source'] or 'NULL'
+    hopup = record['hopup'] or 'NULL'
+    length = record['length'] or 'NULL'
+    price = record['price'] or 'NULL'
+    availability = record['availability']
+    photo = record['photos'][0] if len(record['photos']) > 0 else 'NULL'
+    store = record['store']
+    timestamp = record['timestamp']
+
+    sql_query = "INSERT INTO product (link, title, brand, code, weight, power, blowback, power_source, hopup, length, price, availability, photo, store, timestamp) \
+                 VALUES ($${}$$, $${}$$, $${}$$, $${}$$, {}, {}, {}, {}, {}, {}, {}, {}, $${}$$, $${}$$, to_timestamp({})) \
+                 ON CONFLICT (link) \
+                 DO UPDATE SET title = $${}$$, price={}, availability={}, photo=$${}$$, store=$${}$$, timestamp=to_timestamp({}) \
+                 WHERE product.link=$${}$$"\
+      .format(link, title, brand, code, weight, power, blowback, power_source, hopup, length, price, availability, photo, store, timestamp,
+              title, price, availability, photo, store, timestamp, link)
+
+    cur.execute(sql_query)
     conn.commit()
+    logging.info('Update record: {}, {}'.format(link, title))
+    success += 1
   except Exception as e:
-    print(e)
+    conn.rollback()
+    logging.error(e)
+    errors += 1
