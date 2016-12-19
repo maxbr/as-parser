@@ -1,27 +1,93 @@
-import urllib2
+# encoding: utf-8
+
+from urllib.request import urlopen, Request
 from lxml import etree
-from StringIO import StringIO
+from io import BytesIO
+from kafka_header import *
+import time
+import logging
 
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-html = urllib2.urlopen('http://voentursnar.ru/catalog/40/?limit=12&arrFilter_14=1506745864&arrFilter_P1_MIN=&arrFilter_P1_MAX=&set_filter=%CF%EE%EA%E0%E7%E0%F2%FC&PAGEN_1=1').read()
+URL = 'http://voentursnar.ru'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+REQUEST_HEADERS = {'User-Agent': USER_AGENT}
+
+logging.info('Parser was launched against {}'.format(URL))
+
 parser = etree.HTMLParser()
-tree = etree.parse(StringIO(html), parser)
 
-pages_num = [x[0].text for x in tree.xpath('/html/body/div[2]/div[4]/div[2]/div[4]/div[13]/div/div/ul/li[*]')][:-1]
-last_page = int(pages_num[-1])
+html = urlopen(Request('{}/catalog/40/?limit=900'.format(URL), headers=REQUEST_HEADERS)).read()
+tree = etree.parse(BytesIO(html), parser)
+items = tree.xpath('//*[@class="offer_item"]')
 
-catalog = []
+def remove_redundant_words(name):
+  return name.replace('ЭЛЕКТРОПНЕВМ.', '')\
+    .replace('электропневм.', '')\
+    .replace('пневм.', '')\
+    .replace('ПНЕВМ.', '')\
+    .replace('ПУЛЕМЁТ', 'Пулемет')\
+    .replace('ПИСТОЛЕТ', 'Пистолет')\
+    .replace('ВИНТОВКА', 'Винтовка')\
+    .replace('Страйкбольный', '')\
+    .replace('страйкбольный', '')\
+    .replace('СТРАЙКБОЛЬНОЙ', '')\
+    .replace('СТРАЙКБОЛЬНАЯ', '')\
+    .replace('страйкбольная', '')\
+    .replace('газов.', '')\
+    .replace('КОРПУС В СБОРЕ', 'Корпус в сборе')\
+    .replace('АВТОМАТ', 'Автомат').replace('  ', ' ')
 
-for i in range(1, last_page+1):
-    html = html = urllib2.urlopen('http://voentursnar.ru/catalog/40/?limit=12&arrFilter_14=1506745864&arrFilter_P1_MIN=&arrFilter_P1_MAX=&set_filter=%CF%EE%EA%E0%E7%E0%F2%FC&PAGEN_1=1').read()
-    tree = etree.parse(StringIO(html), parser)
-    items = tree.xpath('//*[@class="offer_item"]')
+counter = 0
+errors = 0
 
-    for item in items:
-        link = item[2][0].attrib['href']
-        title = item[2][0].text
-        price = item[3][0].text.strip()
+for item in items:
+  try:
+    image = '{}{}'.format(URL, item[1][0][0].attrib['src'])
+    link = '{}{}'.format(URL, item[2][0].attrib['href'])
+    title = remove_redundant_words(item[2][0].text.strip())
+    photos = [image]
 
-        catalog.append((link, title, price))
-    
+    brand = None
+    if title[-1] == ')' and '(' in title:
+      brand = title[title.rindex('(')+1:-1]
+    code = None
 
+    try:
+      price = int(str(etree.tostring(item[3][1][0])).split('</span>')[1].strip().replace('\\n', '').replace('\\t', '').replace('&#1088;&#1091;&#1073;\'', '').replace(' ', ''))
+      if price == 0:
+        price = None
+    except:
+      price = None
+
+    availability = 'нет' not in item[4].text.strip()
+    timestamp = int(time.time())
+
+    product = {
+      'link': link,
+      'title': title,
+      'brand': brand,
+      'code': code,
+      'weight': None,
+      'power': None,
+      'blowback': None,
+      'power_source': None,
+      'hopup': None,
+      'length': None,
+      'price': price,
+      'availability': availability,
+      'photos': photos,
+      'store': URL,
+      'timestamp': timestamp
+    }
+
+    logging.info('Found: {}, {}, {}, {}'.format(link, title, price, timestamp))
+    counter += 1
+    future = producer.send(topic_prefix + 'default', product)
+
+  except Exception as e:
+    errors += 1
+    logging.error(e)
+
+logging.info('Total success: {}'.format(counter))
+logging.info('Total failed: {}'.format(errors))

@@ -77,7 +77,7 @@ hyper images
 
 
 // producers
-['airsoftrusru', 'sharometru', 'voentursnarru'].each { SITE_SCRIPT ->
+['airsoftrusru', 'voentursnarru', 'strikeplanetru'].each { SITE_SCRIPT ->
     job("Hyper_Run_Producer_${SITE_SCRIPT}") {
         logRotator(-1, 100, -1, 5)
         parameters {
